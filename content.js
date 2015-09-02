@@ -34,6 +34,10 @@ function toggleVisibility() {
 		
         //console.log(this.innerText);
 		
+		// do not insert images into the description-of-drawings section
+		if ($(this).parent('description-of-drawings').length)
+			return;
+		
         var matches = this.innerText.match(/FIG. \d+/g);
 		
 		if (matches === null)
