@@ -36,7 +36,9 @@ function toggleVisibility() {
             html: "<img class=\"drawings\" style=\"height:725px;max-width:725px;width: expression(this.width > 725 ? 725: true);\" src=\"" + href + "\"/>"
         });
     }
-
+    
+    $("div[class*='patent-section patent-description-section'] heading").css('font-weight', 'bold');
+    
     var descSections = $("div[class*='patent-section patent-description-section'] p");
     var lastImageSection = null;
     var totalImages = displays.length;
