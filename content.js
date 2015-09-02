@@ -25,7 +25,7 @@ function toggleVisibility() {
     for (var i = 0; i < allImages.length; i++) {
         var image = allImages[i];
         var href = $(image.innerHTML).attr("href");
-		
+
         //the first image maybe the summary page image which should be removed
         var match = href.match(/\d+\.png/g)[0];
         if (match === "00000.png")
@@ -33,7 +33,7 @@ function toggleVisibility() {
 
         displays.push({
             count: 0,
-            html: "<img style=\"height:725px;max-width:725px;width: expression(this.width > 725 ? 725: true);\" src=\"" + href + "\"/>"
+            html: "<img class=\"drawings\" style=\"height:725px;max-width:725px;width: expression(this.width > 725 ? 725: true);\" src=\"" + href + "\"/>"
         });
     }
 
@@ -62,23 +62,28 @@ function toggleVisibility() {
 
             if (displays[image].count === 0) {
                 displays[image].count = 1;
-                lastImageSection = $(this);
                 totalImages--;
-                $(this).append(displays[image].html);
+                var inserted = $(this).has("img[class*='drawings']");
+                if (inserted.length === 0) {
+                    lastImageSection = $(this);
+                    $(this).append(displays[image].html);
+                } else {
+                    lastImageSection = null;
+                }
             }
         }
     });
-    
+
     //if there are images not inserted yet, insert them just after the last image.
     if (totalImages > 0) {
         for (var m = 0; m < displays.length; m++) {
             if ((displays[m].count === 0) && (lastImageSection != null)) {
-                displays[m].count = 1;           
+                displays[m].count = 1;
                 lastImageSection.append(displays[m].html);
             }
-        }        
+        }
     }
-    
+
     var angle = 0;
     $("img").rotate({
         bind: {
@@ -92,6 +97,8 @@ function toggleVisibility() {
             }
         }
     });
+
+    imageInserted = true;
 }
 
 toggleVisibility();
