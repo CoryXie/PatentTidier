@@ -100,7 +100,18 @@ function toggleVisibility() {
         }
     });
 
-    imageInserted = true;
+    var url = $("#appbar-read-patent-link").attr("href") + "&embedded=true";
+    var iframe = "<iframe id=\"patentdoc\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
+    $("div[class*='patent-section patent-description-section']").after(iframe);
+    var descSection = $("div[class*='patent-section patent-description-section']");
+    var descPosition = descSection.position();
+    $("#patentdoc").css({
+        position: 'absolute',
+        top: descPosition.top,
+        left: descPosition.left + descSection.width() + 10,
+        width: 750,
+        height: descSection.height()
+    });
 }
 
 toggleVisibility();
