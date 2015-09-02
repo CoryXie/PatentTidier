@@ -38,7 +38,8 @@ function toggleVisibility() {
     }
 
     var descSections = $("div[class*='patent-section patent-description-section'] p");
-
+    var lastImageSection = null;
+    var totalImages = displays.length;
     descSections.each(function(index) {
 
         // do not insert images into the description-of-drawings section
@@ -61,12 +62,23 @@ function toggleVisibility() {
 
             if (displays[image].count === 0) {
                 displays[image].count = 1;
+                lastImageSection = $(this);
+                totalImages--;
                 $(this).append(displays[image].html);
             }
         }
     });
-
-
+    
+    //if there are images not inserted yet, insert them just after the last image.
+    if (totalImages > 0) {
+        for (var m = 0; m < displays.length; m++) {
+            if ((displays[m].count === 0) && (lastImageSection != null)) {
+                displays[m].count = 1;           
+                lastImageSection.append(displays[m].html);
+            }
+        }        
+    }
+    
     var angle = 0;
     $("img").rotate({
         bind: {
