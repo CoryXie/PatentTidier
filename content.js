@@ -1,20 +1,20 @@
 function toggleVisibility() {
-    var el = $("div[class*='patent-section patent-claims-section']");
+    var selectors = ["div[class*='patent-section patent-drawings-section']",
+                     "div[class*='patent-section patent-claims-section']",
+                     "div[class*='patent-section patent-tabular-section']",
+                     "table[class*='patent-bibdata']"];
+    
+    for (var i = 0; i < selectors.length; i++) {
+        
+        var el = $(selectors[i]);
 
-    if (el.is(':hidden')) {
-        el.show();
-    } else {
-        el.hide();
+        if (el.is(':hidden')) {
+            el.show();
+        } else {
+            el.hide();
+        }        
     }
-
-    var el = $("div[class*='patent-section patent-drawings-section']");
-
-    if (el.is(':hidden')) {
-        el.show();
-    } else {
-        el.hide();
-    }
-
+    
     var allImages = $(".patent-thumbnail");
 
     if (allImages === null)
@@ -89,7 +89,7 @@ function toggleVisibility() {
         bind: {
             click: function() {
                 angle += 90;
-                if (angle === 450)
+                if (angle === 360)
                     angle = 0;
                 $(this).rotate({
                     angle: angle
