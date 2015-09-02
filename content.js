@@ -7,6 +7,14 @@ function toggleVisibility() {
         el.hide();
     }
 
+    var el = $("div[class*='patent-section patent-drawings-section']");
+
+    if (el.is(':hidden')) {
+        el.show();
+    } else {
+        el.hide();
+    }	
+	
     var allImages = $(".patent-thumbnail");
     var displays = [];
 
