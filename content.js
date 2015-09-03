@@ -1,20 +1,22 @@
 function toggleVisibility() {
-    var selectors = ["div[class*='patent-section patent-drawings-section']",
-                     "div[class*='patent-section patent-claims-section']",
-                     "div[class*='patent-section patent-tabular-section']",
-                     "table[class*='patent-bibdata']"];
-    
+    var selectors = ["div[class='patent-section patent-drawings-section']",
+        "div[class='patent-section patent-claims-section']",
+        "div[class='patent-section patent-tabular-section']",
+        "table[class='patent-bibdata']",
+        "table[class='patent-bibdata patent-drawings-missing']"
+    ];
+
     for (var i = 0; i < selectors.length; i++) {
-        
+
         var el = $(selectors[i]);
 
         if (el.is(':hidden')) {
             el.show();
         } else {
             el.hide();
-        }        
+        }
     }
-    
+
     var allImages = $(".patent-thumbnail");
 
     if (allImages === null)
@@ -33,12 +35,12 @@ function toggleVisibility() {
 
         displays.push({
             count: 0,
-            html: "<img class=\"drawings\" style=\"height:725px;max-width:725px;width: expression(this.width > 725 ? 725: true);\" src=\"" + href + "\"/>"
+            html: "<br><img class=\"drawings\" style=\"height:725px;max-width:725px;width: expression(this.width > 725 ? 725: true);\" src=\"" + href + "\"/>"
         });
     }
-    
+
     $("div[class*='patent-section patent-description-section'] heading").css('font-weight', 'bold');
-    
+
     var descSections = $("div[class*='patent-section patent-description-section'] p");
     var lastImageSection = null;
     var totalImages = displays.length;
@@ -65,7 +67,7 @@ function toggleVisibility() {
             if (displays[image].count === 0) {
                 displays[image].count = 1;
                 totalImages--;
-                var inserted = $(this).has("img[class*='drawings']");
+                var inserted = $(this).has("img[class='drawings']");
                 if (inserted.length === 0) {
                     lastImageSection = $(this);
                     $(this).append(displays[image].html);
@@ -100,18 +102,20 @@ function toggleVisibility() {
         }
     });
 
-    var url = $("#appbar-read-patent-link").attr("href") + "&embedded=true";
-    var iframe = "<iframe id=\"patentdoc\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
-    $("div[class*='patent-section patent-description-section']").after(iframe);
-    var descSection = $("div[class*='patent-section patent-description-section']");
-    var descPosition = descSection.position();
-    $("#patentdoc").css({
-        position: 'absolute',
-        top: descPosition.top,
-        left: descPosition.left + descSection.width() + 10,
-        width: 750,
-        height: descSection.height()
-    });
+    if (lastImageSection != null) {
+        var url = $("#appbar-read-patent-link").attr("href") + "&embedded=true";
+        var iframe = "<iframe id=\"patentdoc\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
+        $("div[class='patent-section patent-description-section']").after(iframe);
+        var descSection = $("div[class*='patent-section patent-description-section']");
+        var descPosition = descSection.position();
+        $("#patentdoc").css({
+            position: 'absolute',
+            top: descPosition.top,
+            left: descPosition.left + descSection.width() + 10,
+            width: 900,
+            height: descSection.height()
+        });
+    }
 }
 
 toggleVisibility();
