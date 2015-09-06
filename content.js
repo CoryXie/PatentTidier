@@ -6,16 +6,20 @@ function toggleVisibility() {
         "table[class='patent-bibdata patent-drawings-missing']"
     ];
 
+    var isHidden = $(selectors[0]).is(':hidden');
+
     for (var i = 0; i < selectors.length; i++) {
 
         var el = $(selectors[i]);
 
-        if (el.is(':hidden')) {
+        if (isHidden) {
             el.show();
         } else {
             el.hide();
         }
     }
+
+    isHidden = !isHidden;
 
     var allImages = $(".patent-thumbnail");
 
@@ -102,20 +106,37 @@ function toggleVisibility() {
         }
     });
 
-    if (lastImageSection != null) {
-        var url = $("#appbar-read-patent-link").attr("href") + "&embedded=true";
-        var iframe = "<iframe id=\"patentdoc\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
-        $("div[class='patent-section patent-description-section']").after(iframe);
-        var descSection = $("div[class*='patent-section patent-description-section']");
-        var descPosition = descSection.position();
-        $("#patentdoc").css({
-            position: 'absolute',
-            top: descPosition.top,
-            left: descPosition.left + descSection.width() + 10,
-            width: 900,
-            height: descSection.height()
-        });
-    }
+    // Use default value loadPDF = true.
+    chrome.storage.sync.get({
+        loadPatentPDF: true
+    }, function(items) {
+
+        if ($("#patentdoc").length > 0) {
+            if (items.loadPatentPDF === true) {
+                if (isHidden)
+                    $("#patentdoc").show();
+                else
+                    $("#patentdoc").hide();
+            } else {
+                $("#patentdoc").hide();
+            }
+        }
+
+        if ((items.loadPatentPDF === true) && ($("#patentdoc").length === 0) && (isHidden === true)) {
+            var url = $("#appbar-read-patent-link").attr("href") + "&embedded=true";
+            var iframe = "<iframe id=\"patentdoc\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
+            $("div[class='patent-section patent-description-section']").after(iframe);
+            var descSection = $("div[class*='patent-section patent-description-section']");
+            var descPosition = descSection.position();
+            $("#patentdoc").css({
+                position: 'absolute',
+                top: descPosition.top,
+                left: descPosition.left + descSection.width() + 10,
+                width: 900,
+                height: descSection.height()
+            });
+        }
+    });
 }
 
 toggleVisibility();
