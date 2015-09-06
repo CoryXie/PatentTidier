@@ -46,6 +46,18 @@ function toggleVisibility() {
     $("div[class*='patent-section patent-description-section'] heading").css('font-weight', 'bold');
 
     var descSections = $("div[class*='patent-section patent-description-section'] p");
+    
+    //turn to inline mode
+    $.fn.editable.defaults.mode = 'inline';
+
+    descSections.editable({
+    type: 'textarea',
+    title: 'Enter New Text',
+    success: function(response, newValue) {
+            console.log(newValue); //update backbone model
+        }
+    });
+    
     var lastImageSection = null;
     var totalImages = displays.length;
     descSections.each(function(index) {
