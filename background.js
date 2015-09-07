@@ -26,8 +26,6 @@ chrome.runtime.onInstalled.addListener(function() {
 chrome.pageAction.onClicked.addListener(function(tab) {
   chrome.tabs.executeScript(null, {file: "libs/jquery-2.1.4.js"});
   chrome.tabs.executeScript(null, {file: "libs/jQueryRotate.js"});
-  chrome.tabs.executeScript(null, {file: "libs/jquery.poshytip.js"});  
-  chrome.tabs.executeScript(null, {file: "libs/jquery-editable-poshytip.js"});
-  chrome.tabs.insertCSS(null, {file: "css/jquery-editable.css"});
+  chrome.tabs.executeScript(null, {file: "libs/jquery.jeditable.js"});
   chrome.tabs.executeScript(null, {file: "content.js"});
 });

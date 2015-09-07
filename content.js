@@ -46,18 +46,7 @@ function toggleVisibility() {
     $("div[class*='patent-section patent-description-section'] heading").css('font-weight', 'bold');
 
     var descSections = $("div[class*='patent-section patent-description-section'] p");
-    
-    //turn to inline mode
-    $.fn.editable.defaults.mode = 'inline';
 
-    descSections.editable({
-    type: 'textarea',
-    title: 'Enter New Text',
-    success: function(response, newValue) {
-            console.log(newValue); //update backbone model
-        }
-    });
-    
     var lastImageSection = null;
     var totalImages = displays.length;
     descSections.each(function(index) {
@@ -120,27 +109,43 @@ function toggleVisibility() {
 
     // Use default value loadPDF = true.
     chrome.storage.sync.get({
-        loadPatentPDF: true
+        loadPatentPDF: false,
+        editPatentDesc: true
     }, function(items) {
 
-        if ($("#patentdoc").length > 0) {
+        if (items.editPatentDesc === true) {
+            descSections.editable(function(value, settings) {
+                //console.log(this);
+                //console.log(value);
+                //console.log(settings);
+                return (value);
+            }, {
+                indicator: "<img src='images/loading.gif'>",
+                type: "textarea",
+                submit: "OK",
+                cancel: "Cancel",
+                tooltip: "Click to edit patent descriptions..."
+            });
+        }
+
+        if ($("#patentpdf").length > 0) {
             if (items.loadPatentPDF === true) {
                 if (isHidden)
-                    $("#patentdoc").show();
+                    $("#patentpdf").show();
                 else
-                    $("#patentdoc").hide();
+                    $("#patentpdf").hide();
             } else {
-                $("#patentdoc").hide();
+                $("#patentpdf").hide();
             }
         }
 
-        if ((items.loadPatentPDF === true) && ($("#patentdoc").length === 0) && (isHidden === true)) {
+        if ((items.loadPatentPDF === true) && ($("#patentpdf").length === 0) && (isHidden === true)) {
             var url = $("#appbar-read-patent-link").attr("href") + "&embedded=true";
-            var iframe = "<iframe id=\"patentdoc\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
+            var iframe = "<iframe id=\"patentpdf\" width=\"750\" height=\"850\" frameborder=\"0\" scrolling=\"yes\" marginheight=\"0\" marginwidth=\"0\" src=\"" + url + "\"> </iframe>";
             $("div[class='patent-section patent-description-section']").after(iframe);
             var descSection = $("div[class*='patent-section patent-description-section']");
             var descPosition = descSection.position();
-            $("#patentdoc").css({
+            $("#patentpdf").css({
                 position: 'absolute',
                 top: descPosition.top,
                 left: descPosition.left + descSection.width() + 10,

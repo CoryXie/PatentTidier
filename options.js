@@ -1,8 +1,10 @@
 // Saves options to chrome.storage.sync.
 function save_options() {
     var loadPDF = document.getElementById('loadPDF').checked;
+    var editDesc = document.getElementById('editDesc').checked;
     chrome.storage.sync.set({
-        loadPatentPDF: loadPDF
+        loadPatentPDF: loadPDF,
+        editPatentDesc: editDesc
     }, function() {
         // Update status to let user know options were saved.
         var status = document.getElementById('status');
@@ -16,11 +18,13 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-    // Use default value loadPatentPDF = true.
+    // Use default value loadPatentPDF = false, editPatentDesc = true.
     chrome.storage.sync.get({
-        loadPatentPDF: true
+        loadPatentPDF: false,
+        editPatentDesc: true
     }, function(items) {
         document.getElementById('loadPDF').checked = items.loadPatentPDF;
+        document.getElementById('editDesc').checked = items.editPatentDesc;
     });
 }
 
