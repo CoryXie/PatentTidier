@@ -1,8 +1,9 @@
-## What is the Patent Tidier Extension?
+## What is Patent Tidier Extension?
 
-Patent Tidier is a very basic Chrome Extension that:
+Patent Tidier is a Chrome Extension that:
 
-* Hides unnecessary sections on Google Patents pages by default on page load.
-* Displays an icon in the address bar to allow users to click to toggle visibility of these sections.
+* Displays an icon in the address bar to allow users to toggle visibility of unnecessary Google Patents sections.
 * Inserts accompany images into proper places in the patent description sections for better readbility.
-* Inserted patent images can be rotated to proper orientation by clicking for better readbility.
+* Inserted patent images can be rotated to proper orientation by clicking on the images for better readbility.
+* Load Patent PDF file along side the OCR generated patent descriptions for viewing side by side.
+* Allow users to edit (correct) the OCR generated patent descriptions by clicking on these descriptions.
