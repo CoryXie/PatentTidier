@@ -46,6 +46,12 @@ function toggleVisibility() {
     $("div[class*='patent-section patent-description-section'] heading").css('font-weight', 'bold');
 
     var descSections = $("div[class*='patent-section patent-description-section'] p");
+	$("#left-toolbar-buttons").prepend("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='savepatentword'>Save Patent as Microsoft Word</div>");
+	
+	$("#savepatentword").click(function(event) {
+		$("#intl_patents_v").wordExport();
+	});
+
 
     var lastImageSection = null;
     var totalImages = displays.length;

@@ -27,5 +27,7 @@ chrome.pageAction.onClicked.addListener(function(tab) {
   chrome.tabs.executeScript(null, {file: "libs/jquery-2.1.4.js"});
   chrome.tabs.executeScript(null, {file: "libs/jQueryRotate.js"});
   chrome.tabs.executeScript(null, {file: "libs/jquery.jeditable.js"});
+  chrome.tabs.executeScript(null, {file: "libs/FileSaver.js"});
+  chrome.tabs.executeScript(null, {file: "libs/jquery.wordexport.js"});
   chrome.tabs.executeScript(null, {file: "content.js"});
 });
