@@ -9,3 +9,4 @@ Patent Tidier is a Chrome Extension that:
 * Allow users to save patent descriptions as Microsoft Word document (with accompany patent images).
   This feature needs a Chrome extension called 'Allow-Control-Allow-Origin: *' to overcome the "cross-origin
   resource sharing" problem for saving the patent images.
+* Allow users to send patent information to user configured email address (with a Blog entry added on www.justsmart.mobi).
