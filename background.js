@@ -58,7 +58,7 @@ function navigate(url) {
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     //redirect https to http for google urls so that our extension can do http requests
     //to http://www.justsmart.mobi/patents/add since www.justsmart.mobi has no https.
-    if (tab.url.indexOf("https://www.google.com") === 0) {
+    if (tab.url.indexOf("https://www.google.com") === 0 && tab.url.indexOf("/patents/") > 0) {
         var url = tab.url.replace("https", "http");
         navigate(url);
     }

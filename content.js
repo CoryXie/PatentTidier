@@ -105,35 +105,39 @@ function toggleVisibility() {
         }
     });
 
-    var savepatentword = $("#savepatentword");
-    if (savepatentword.length === 0) {
-        var horizontalToolbar = $("#left-toolbar-buttons").find(".viewport-chrome-toolbar.viewport-chrome-toolbar-horizontal");
-        horizontalToolbar.append("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='savepatentword'>Save Patent as Word</div>");
-        horizontalToolbar.append("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='sendpatentblog'>Send Patent as Blog</div>");
-
-        $("#savepatentword").click(function(event) {
-            $("#intl_patents_v").wordExport();
-        });
-
-        var patentTitle = $(".patent-number")[0].innerText + " - " + $("invention-title")[0].innerText;
-        var patentAbstract = $(".abstract")[0].innerText;
-
-        $("#sendpatentblog").click(function(event) {
-            $.post("http://www.justsmart.mobi/patents/add", {
-                    "data[Patent][title]": patentTitle,
-                    "data[Patent][body]": patentAbstract
-                },
-                function(data) {
-                    alert("Patent Information Sent!");
-                });
-        });
-    }
-
     // Use default value loadPDF = true.
     chrome.storage.sync.get({
         loadPatentPDF: false,
-        editPatentDesc: true
+        editPatentDesc: true,
+        sendPatentEmail: false,
+        sendEmailAddr: "me@example.com"
     }, function(items) {
+
+        var savepatentword = $("#savepatentword");
+        if (savepatentword.length === 0) {
+            var horizontalToolbar = $("#left-toolbar-buttons").find(".viewport-chrome-toolbar.viewport-chrome-toolbar-horizontal");
+            horizontalToolbar.append("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='savepatentword'>Save Patent as Word</div>");
+            horizontalToolbar.append("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='sendpatentblog'>Send Patent as Blog</div>");
+
+            $("#savepatentword").click(function(event) {
+                $("#intl_patents_v").wordExport();
+            });
+
+            var patentTitle = $(".patent-number")[0].innerText + " - " + $("invention-title")[0].innerText;
+            var patentAbstract = $(".abstract")[0].innerText;
+
+            $("#sendpatentblog").click(function(event) {
+                $.post("http://www.justsmart.mobi/patents/add", {
+                        "data[Patent][title]": patentTitle,
+                        "data[Patent][body]": patentAbstract,
+                        "data[Patent][sendemail]": items.sendPatentEmail,
+                        "data[Patent][email]": items.sendEmailAddr,
+                    },
+                    function(data) {
+                        alert("Patent Information Sent!");
+                    });
+            });
+        }
 
         if (items.editPatentDesc === true) {
             descSections.editable(function(value, settings) {
