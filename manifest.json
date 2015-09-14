@@ -14,7 +14,8 @@
     "permissions": [
         "declarativeContent",
         "activeTab",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "content_scripts": [{
         "matches": ["*://*.google.com/patents/*"],

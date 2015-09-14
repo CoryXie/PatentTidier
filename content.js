@@ -45,27 +45,32 @@ function toggleVisibility() {
 
     $("div[class='patent-section patent-description-section'] heading").css('font-weight', 'bold');
 
-    var descSections = $("div[class*='patent-section patent-description-section'] p");
-	$("#left-toolbar-buttons").prepend("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='savepatentword'>Save Patent as Microsoft Word</div>");
-	
-	$("#savepatentword").click(function(event) {
-		$("#intl_patents_v").wordExport();
-	});
+    var descSections = $("div[class='patent-section patent-description-section'] p");
+    var savepatentbar = $("#savepatentbar");
+    if (savepatentbar.length === 0) {
+        var horizontalToolbar = $("#left-toolbar-buttons");
+        horizontalToolbar.append("<div class='viewport-chrome-toolbar viewport-chrome-toolbar-horizontal' role='toolbar' tabindex='0' style='-webkit-user-select: none;' id='savepatentbar'></div>");
+        $("#savepatentbar").append("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='savepatentword'>Save Patent as Word</div>");
+        $("#savepatentbar").append("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='sendpatentdesc'>Send Patent as Blog</div>");
 
-    $("#left-toolbar-buttons").prepend("<div role='button' class='goog-inline-block jfk-button jfk-button-standard' style='-webkit-user-select: none;' href='javascript:void(0)' id='sendpatentdesc'>Send Patent as Blog</div>");
-    var patentTitle = $(".patent-number")[0].innerText + " - " + $("invention-title")[0].innerText;
-    var patentAbstract = $(".abstract")[0].innerText;
 
-    $("#sendpatentdesc").click(function(event) {
-        $.post("http://www.justsmart.mobi/patents/add", {
-                "data[Patent][title]": patentTitle,
-                "data[Patent][body]": patentAbstract
-            },
-            function(data) {
-                alert("Patent Information Sent!");
-            });
-    });
+        $("#savepatentword").click(function(event) {
+            $("#intl_patents_v").wordExport();
+        });
 
+        var patentTitle = $(".patent-number")[0].innerText + " - " + $("invention-title")[0].innerText;
+        var patentAbstract = $(".abstract")[0].innerText;
+
+        $("#sendpatentdesc").click(function(event) {
+            $.post("http://www.justsmart.mobi/patents/add", {
+                    "data[Patent][title]": patentTitle,
+                    "data[Patent][body]": patentAbstract
+                },
+                function(data) {
+                    alert("Patent Information Sent!");
+                });
+        });
+    }
     var lastImageSection = null;
     var totalImages = displays.length;
     descSections.each(function(index) {
