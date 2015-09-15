@@ -127,15 +127,24 @@ function toggleVisibility() {
             var patentAbstract = $(".abstract")[0].innerText;
 
             $("#sendpatentblog").click(function(event) {
-                $.post("http://www.justsmart.mobi/patents/add", {
-                        "data[Patent][title]": patentTitle,
-                        "data[Patent][body]": patentAbstract,
-                        "data[Patent][sendemail]": items.sendPatentEmail,
-                        "data[Patent][email]": items.sendEmailAddr,
-                    },
-                    function(data) {
-                        alert("Patent Information Sent!");
-                    });
+                chrome.storage.sync.get({
+                    loadPatentPDF: false,
+                    editPatentDesc: true,
+                    sendPatentEmail: false,
+                    sendEmailAddr: "me@example.com"
+                }, function(newitems) {
+                    var sendemail = (newitems.sendPatentEmail === true) ? 1 : 0;
+                    var email = newitems.sendEmailAddr;
+                    $.post("http://www.justsmart.mobi/patents/add", {
+                            "data[Patent][title]": patentTitle,
+                            "data[Patent][body]": patentAbstract,
+                            "data[Patent][sendemail]": sendemail,
+                            "data[Patent][email]": email,
+                        },
+                        function(data) {
+                            alert("Patent Information Sent!");
+                        });
+                });
             });
         }
 
